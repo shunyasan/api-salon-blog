@@ -1,0 +1,1 @@
+import { Injectable } from '@nestjs/common';import { getManager } from 'typeorm';@Injectable()export class ClinicService {  async test(): Promise<void> {    console.log('test');  }}
