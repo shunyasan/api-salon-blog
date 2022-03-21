@@ -1,1 +1,0 @@
-import { Module } from '@nestjs/common';import { PartsService } from './parts.service';@Module({  providers: [PartsService],})export class PartsModule {}
