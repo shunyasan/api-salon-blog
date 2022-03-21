@@ -1,23 +1,26 @@
-import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { ClinicGroup } from './clinic_group';
+import { Entity, Column, OneToMany } from 'typeorm';
+import { Machine } from './machine';
 
 @Entity('machine_hr')
 export class MachineHr {
-  @Column('string', { primary: true, name: 'id', comment: 'machineID' })
+  @Column('varchar', { primary: true, name: 'id', comment: 'machineID' })
   id: string;
 
-  @Column('string', { name: 'hair_type', comment: '毛の状態' })
+  @Column('varchar', { name: 'hair_type', comment: '毛の状態' })
   hairType: string;
 
   @Column('integer', { name: 'pain', comment: '痛み' })
   pain: number;
 
-  @Column('string', { name: 'shot_detail', comment: 'ショット詳細' })
+  @Column('varchar', { name: 'shot_detail', comment: 'ショット詳細' })
   shotDetail: string;
 
-  @Column('string', { name: 'shot_type', comment: '照射のタイプ' })
+  @Column('varchar', { name: 'shot_type', comment: '照射のタイプ' })
   shotType: string;
 
   @Column('integer', { name: 'skin_color', comment: '対応可な肌の色' })
   skinColor: number;
+
+  @OneToMany((type) => Machine, (machine) => machine.machineHr)
+  machine: Machine[];
 }

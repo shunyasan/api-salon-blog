@@ -1,19 +1,18 @@
-import { Entity, Column, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Clinic } from './clinic';
-import { ClinicGroup } from './clinic_group';
 
 @Entity('clinic_opening_hours')
 export class ClinicOpeningHours {
-  @Column('string', { primary: true, name: 'id', comment: 'clinicOptionID' })
+  @Column('varchar', { primary: true, name: 'id', comment: 'clinicOptionID' })
   id: string;
 
-  @Column('string', { name: 'start_hours', comment: '麻酔' })
+  @Column('varchar', { name: 'start_hours', comment: '開始時間' })
   startHours: string;
 
-  @Column('string', { name: 'end_hours', comment: '終了時間' })
+  @Column('varchar', { name: 'end_hours', comment: '終了時間' })
   endHours: string;
 
-  @Column('string', { name: 'description', comment: '備考' })
+  @Column('varchar', { name: 'description', comment: '備考', nullable: true })
   description: string;
 
   @Column('boolean', { name: 'mon', comment: '' })
@@ -40,7 +39,7 @@ export class ClinicOpeningHours {
   @Column('boolean', { name: 'hol', comment: '' })
   hol: boolean;
 
-  @Column('string', { name: 'clinic_id', comment: 'clinicId' })
+  @Column('varchar', { name: 'clinic_id', comment: 'clinicId' })
   clinicId: string;
 
   @ManyToOne((type) => Clinic)

@@ -1,10 +1,14 @@
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, OneToMany } from 'typeorm';
+import { Clinic } from './clinic';
 
 @Entity('clinic_area')
 export class ClinicArea {
-  @Column('string', { primary: true, name: 'id', comment: 'areaID' })
+  @Column('varchar', { primary: true, name: 'id', comment: 'areaID' })
   id: string;
 
-  @Column('string', { name: 'area', comment: '地区' })
+  @Column('varchar', { name: 'area', comment: '地区' })
   area: string;
+
+  @OneToMany((type) => Clinic, (clinic) => clinic.area)
+  clinic: Clinic[];
 }

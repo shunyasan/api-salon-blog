@@ -1,19 +1,33 @@
-import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { ClinicGroup } from './clinic_group';
-import { MachineHr } from './machine_hr';
-import { MachineShr } from './machine_shr';
+import { Entity, Column, OneToMany } from 'typeorm';
+import { AboutCategory } from './about_category';
 
 @Entity('origin_category')
 export class OriginCategory {
-  @Column('string', { primary: true, name: 'id', comment: 'OriginCategoryID' })
+  @Column('varchar', {
+    primary: true,
+    name: 'id',
+    length: 10,
+    comment: 'OriginCategoryID',
+  })
   id: string;
 
-  @Column('string', { name: 'name', comment: '広域カテゴリ名' })
+  @Column('varchar', { name: 'name', length: 20, comment: '広域カテゴリ名' })
   name: string;
 
-  @Column('string', { name: 'img_url_lady', comment: '女性の画像' })
+  @Column('varchar', {
+    name: 'img_url_lady',
+    length: 200,
+    comment: '女性の画像',
+  })
   imgUrlLady: string;
 
-  @Column('string', { name: 'img_url_men', comment: '男性の画像' })
+  @Column('varchar', {
+    name: 'img_url_men',
+    length: 200,
+    comment: '男性の画像',
+  })
   imgUrlMen: string;
+
+  @OneToMany((type) => AboutCategory, (aboutCategory) => aboutCategory.origin)
+  aboutCategory: AboutCategory;
 }

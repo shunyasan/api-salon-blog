@@ -1,54 +1,190 @@
-import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  ManyToMany,
+  OneToMany,
+  OneToOne,
+  JoinTable,
+} from 'typeorm';
+import { ClinicArea } from './clinic_area';
 import { ClinicGroup } from './clinic_group';
+import { ClinicOpeningHours } from './clinic_opening_hours';
+import { ClinicOption } from './clinic_option';
+import { Machine } from './machine';
+import { PriceAllBody } from './price_all_body';
+import { PriceArm } from './price_arm';
+import { PriceBackBody } from './price_back_body';
+import { PriceBodySet } from './price_body_set';
+import { PriceFaceSet } from './price_face_set';
+import { PriceFrontBody } from './price_front_body';
+import { PriceLeg } from './price_leg';
+import { PriceLimb } from './price_limb';
+import { PriceLowerBody } from './price_lower_body';
+import { PriceLowerFace } from './price_lower_face';
+import { PriceRange } from './price_range';
+import { PriceSelect } from './price_select';
+import { PriceTime } from './price_time';
+import { PriceUpperBody } from './price_upper_body';
+import { PriceUpperFace } from './price_upper_face';
+import { PriceVio } from './price_vio';
+import { PriceVioSet } from './price_vio_set';
 
 @Entity('clinic')
 export class Clinic {
-  @Column('string', { primary: true, name: 'id', comment: 'clinicID' })
+  @Column('varchar', { primary: true, name: 'id', comment: 'clinicID' })
   id: string;
 
-  @Column('string', { name: 'interior', comment: '内装' })
+  @Column('varchar', { name: 'interior', comment: '内装', nullable: true })
   interior: string;
 
-  @Column('string', { name: 'address', comment: 'address' })
+  @Column('text', { name: 'address', comment: 'address' })
   address: string;
 
-  @Column('string', { name: 'card_pay', comment: 'card_pay' })
+  @Column('varchar', { name: 'card_pay', comment: 'card_pay', nullable: true })
   cardPay: string;
 
-  @Column('string', { name: 'clinic_group_id', comment: 'clinic_group_id' })
+  @Column('varchar', {
+    name: 'medhical_loan',
+    comment: 'medhical_loan',
+    nullable: true,
+  })
+  medhical_loan: string;
+
+  @Column('varchar', { name: 'name', comment: 'name' })
+  name: string;
+
+  @Column('varchar', { name: 'nearest_station', comment: 'nearest_station' })
+  nearest_station: string;
+
+  @Column('varchar', { name: 'reserve', comment: 'reserve', nullable: true })
+  reserve: string;
+
+  @Column('float', { name: 'review', comment: 'review', nullable: true })
+  review: number;
+
+  @Column('varchar', {
+    name: 'room_type',
+    comment: 'room_type',
+    nullable: true,
+  })
+  room_type: string;
+
+  @Column('integer', {
+    name: 'staff_gender',
+    comment: '0:不明 1:女性 2:男性 3:女性男性',
+    default: 0,
+  })
+  staff_gender: number;
+
+  @Column('varchar', { name: 'tax', comment: 'tax', nullable: true })
+  tax: string;
+
+  @Column('varchar', { name: 'tel', comment: 'tel', nullable: true })
+  tel: string;
+
+  @Column('varchar', { name: 'url', comment: 'url', nullable: true })
+  url: string;
+
+  @Column('varchar', { name: 'area_id', comment: '地区名' })
+  areaId: string;
+
+  @Column('varchar', {
+    name: 'clinic_group_id',
+    comment: 'クリニックグループID',
+    nullable: true,
+  })
   clinicGroupId: string;
 
   @ManyToOne((type) => ClinicGroup)
   @JoinColumn([{ name: 'clinic_group_id', referencedColumnName: 'id' }])
   clinicGroup: ClinicGroup;
 
-  @Column('string', { name: 'medhical_loan', comment: 'medhical_loan' })
-  medhical_loan: string;
+  @ManyToOne((type) => ClinicArea)
+  @JoinColumn([{ name: 'area_id', referencedColumnName: 'id' }])
+  area: ClinicArea;
 
-  @Column('string', { name: 'name', comment: 'name' })
-  name: string;
+  @ManyToMany((type) => Machine, (machines) => machines.clinics)
+  @JoinTable({ name: 'clinics_machines' })
+  machines: Machine[];
 
-  @Column('string', { name: 'nearest_station', comment: 'nearest_station' })
-  nearest_station: string;
+  @OneToMany(
+    (type) => ClinicOpeningHours,
+    (clinicOpeningHours) => clinicOpeningHours.clinic,
+  )
+  clinicOpeningHours: ClinicOpeningHours[];
 
-  @Column('string', { name: 'reserve', comment: 'reserve' })
-  reserve: string;
+  @OneToOne((type) => ClinicOption, (clinicOprion) => clinicOprion.clinic)
+  clinicOprion: ClinicOption;
 
-  @Column('string', { name: 'review', comment: 'review' })
-  review: string;
+  /*
+   * Priceのリレーション
+   */
 
-  @Column('string', { name: 'room_type', comment: 'room_type' })
-  room_type: string;
+  @OneToMany((type) => PriceAllBody, (priceAllBody) => priceAllBody.clinic)
+  priceAllBody: PriceAllBody[];
 
-  @Column('integer', { name: 'staff_gender', comment: 'staff_gender' })
-  staff_gender: number;
+  @OneToMany((type) => PriceArm, (priceArm) => priceArm.clinic)
+  priceArm: PriceArm[];
 
-  @Column('string', { name: 'tax', comment: 'tax' })
-  tax: string;
+  @OneToMany((type) => PriceBackBody, (priceBackBody) => priceBackBody.clinic)
+  priceBackBody: PriceBackBody[];
 
-  @Column('string', { name: 'tel', comment: 'tel' })
-  tel: string;
+  @OneToMany((type) => PriceBodySet, (priceBodySet) => priceBodySet.clinic)
+  priceBodySet: PriceBodySet[];
 
-  @Column('string', { name: 'url', comment: 'url' })
-  url: string;
+  @OneToMany((type) => PriceFaceSet, (priceFaceSet) => priceFaceSet.clinic)
+  priceFaceSet: PriceFaceSet[];
+
+  @OneToMany(
+    (type) => PriceFrontBody,
+    (priceFrontBody) => priceFrontBody.clinic,
+  )
+  priceFrontBody: PriceFrontBody[];
+
+  @OneToMany((type) => PriceLeg, (priceLeg) => priceLeg.clinic)
+  priceLeg: PriceLeg[];
+
+  @OneToMany((type) => PriceLimb, (priceLimb) => priceLimb.clinic)
+  priceLimb: PriceLimb[];
+
+  @OneToMany(
+    (type) => PriceLowerBody,
+    (priceLowerBody) => priceLowerBody.clinic,
+  )
+  priceLowerBody: PriceLowerBody[];
+
+  @OneToMany(
+    (type) => PriceLowerFace,
+    (priceLowerFace) => priceLowerFace.clinic,
+  )
+  priceLowerFace: PriceLowerFace[];
+
+  @OneToMany((type) => PriceRange, (priceRange) => priceRange.clinic)
+  priceRange: PriceRange[];
+
+  @OneToMany((type) => PriceSelect, (priceSelect) => priceSelect.clinic)
+  priceSelect: PriceSelect[];
+
+  @OneToMany((type) => PriceTime, (priceTime) => priceTime.clinic)
+  priceTime: PriceTime[];
+
+  @OneToMany(
+    (type) => PriceUpperBody,
+    (priceUpperBody) => priceUpperBody.clinic,
+  )
+  priceUpperBody: PriceUpperBody[];
+
+  @OneToMany(
+    (type) => PriceUpperFace,
+    (priceUpperFace) => priceUpperFace.clinic,
+  )
+  priceUpperFace: PriceUpperFace[];
+
+  @OneToMany((type) => PriceVioSet, (priceVioSet) => priceVioSet.clinic)
+  priceVioSet: PriceVioSet[];
+
+  @OneToMany((type) => PriceVio, (priceVio) => priceVio.clinic)
+  priceVio: PriceVio[];
 }
