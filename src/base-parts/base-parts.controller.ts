@@ -1,5 +1,6 @@
 import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { PartsIdNameDto } from 'src/common/dto/parts_id_name.dto';
 import { BaseParts } from 'src/common/entities/base_parts';
 import { BasePartsService } from './base-parts.service';
 
@@ -35,5 +36,23 @@ export class BasePartsController {
   })
   async getBasePartsById(@Param('id') id: string): Promise<BaseParts> {
     return this.basePartsService.getBasePartsById(id);
+  }
+
+  @Get('aboutCategoryId/:aboutCategoryId')
+  @ApiOperation({
+    operationId: 'getAllAboutCategoryByAboutCategoryId',
+    summary: '部位を詳細カテゴリIDから全件取得',
+    description: '部位を詳細カテゴリIDから全件取得',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: BaseParts,
+  })
+  async getAllBasePartsByAboutCategoryId(
+    @Param('aboutCategoryId') aboutCategoryId: string,
+  ): Promise<PartsIdNameDto[]> {
+    return this.basePartsService.getAllBasePartsByAboutCategoryId(
+      aboutCategoryId,
+    );
   }
 }

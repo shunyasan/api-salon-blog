@@ -40,8 +40,8 @@ export class AboutCategoryController {
   @Get('originId/:originId')
   @ApiOperation({
     operationId: 'getAllAboutCategoryByOriginId',
-    summary: '詳細カテゴリを広域カテゴリIDから1件取得',
-    description: '詳細カテゴリを広域カテゴリIDから1件取得',
+    summary: '詳細カテゴリを広域カテゴリIDから全件取得',
+    description: '詳細カテゴリを広域カテゴリIDから全件取得',
   })
   @ApiResponse({
     status: HttpStatus.OK,
