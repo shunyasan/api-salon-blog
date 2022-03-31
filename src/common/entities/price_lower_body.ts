@@ -22,8 +22,8 @@ export class PriceLowerBody {
   @Column('integer', { name: 'price', comment: '総額料金' })
   price: number;
 
-  @Column('integer', { name: 'once_price', comment: '1回料金' })
-  once_price: number;
+  @Column('integer', { name: 'oncePrice', comment: '1回料金' })
+  oncePrice: number;
 
   @Column('varchar', { name: 'description', comment: '備考', nullable: true })
   description: string;

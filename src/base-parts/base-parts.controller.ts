@@ -1,6 +1,6 @@
-import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { PartsIdNameDto } from 'src/common/dto/parts_id_name.dto';
+import { IdAndNameDto } from '@/src/common/dto/id_and_name.dto';
 import { BaseParts } from 'src/common/entities/base_parts';
 import { BasePartsService } from './base-parts.service';
 
@@ -50,9 +50,44 @@ export class BasePartsController {
   })
   async getAllBasePartsByAboutCategoryId(
     @Param('aboutCategoryId') aboutCategoryId: string,
-  ): Promise<PartsIdNameDto[]> {
+  ): Promise<BaseParts[]> {
     return this.basePartsService.getAllBasePartsByAboutCategoryId(
       aboutCategoryId,
     );
+  }
+
+  @Get('id-and-name/aboutCategoryId/:aboutCategoryId')
+  @ApiOperation({
+    operationId: 'getAllAboutCategoryByAboutCategoryId',
+    summary: '部位を詳細カテゴリIDから全件取得',
+    description: '部位を詳細カテゴリIDから全件取得',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: BaseParts,
+  })
+  async getAllBasePartsIdAndName(
+    @Param('aboutCategoryId') aboutCategoryId: string,
+  ): Promise<IdAndNameDto[]> {
+    return this.basePartsService.getAllBasePartsIdAndName(aboutCategoryId);
+  }
+
+  @Get('id-and-name/sort-selected')
+  @ApiOperation({
+    operationId: 'getBySortSelected',
+    summary: '該当のデータを先頭に並び替え全件取得',
+    description: '該当のデータを先頭に並び替え全件取得',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: IdAndNameDto,
+    isArray: true,
+  })
+  async getBySortSelected(
+    @Query('aboutCategoryId') aboutCategoryId: string,
+    @Query('partsId') partsId?: string,
+    // これをoptionalに。
+  ): Promise<IdAndNameDto[]> {
+    return this.basePartsService.getBySortSelected(aboutCategoryId, partsId);
   }
 }

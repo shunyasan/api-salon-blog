@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
 import { BaseParts } from './base_parts';
 
@@ -9,6 +10,7 @@ export class Parts {
   @Column('varchar', { name: 'name', comment: '部位名' })
   name: string;
 
+  @Exclude()
   @Column('integer', { name: 'places', comment: '箇所数' })
   places: number;
 

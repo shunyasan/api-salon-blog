@@ -1,6 +1,7 @@
-import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { OriginCategory } from 'src/common/entities/origin_category';
+import { IdAndNameDto } from '../common/dto/id_and_name.dto';
 import { OriginCategoryService } from './origin-category.service';
 
 @ApiTags('originCategory')
@@ -23,6 +24,21 @@ export class OriginCategoryController {
     return this.originCategoryService.getAllOriginCategory();
   }
 
+  @Get('relation-parts')
+  @ApiOperation({
+    operationId: 'getAllRelationParts',
+    summary: 'カテゴリにPartsをJoinして全件取得',
+    description: 'カテゴリにPartsをJoinして全件取得',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    isArray: true,
+    type: OriginCategory,
+  })
+  async getAllRelationParts(): Promise<OriginCategory[]> {
+    return this.originCategoryService.getAllRelationParts();
+  }
+
   @Get(':id')
   @ApiOperation({
     operationId: 'getOriginCategoryById',
@@ -37,5 +53,22 @@ export class OriginCategoryController {
     @Param('id') id: string,
   ): Promise<OriginCategory> {
     return this.originCategoryService.getOriginCategoryById(id);
+  }
+
+  @Get('id-and-name/sort-selected')
+  @ApiOperation({
+    operationId: 'getBySortSelected',
+    summary: '該当のデータを先頭に並び替え全件取得',
+    description: '該当のデータを先頭に並び替え全件取得',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: IdAndNameDto,
+    isArray: true,
+  })
+  async getBySortSelected(
+    @Query('originCategoryId') originCategoryId: string,
+  ): Promise<IdAndNameDto[]> {
+    return this.originCategoryService.getBySortSelected(originCategoryId);
   }
 }

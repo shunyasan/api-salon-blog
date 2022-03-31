@@ -1,4 +1,5 @@
-import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { BaseParts } from './base_parts';
 import { OriginCategory } from './origin_category';
 
 @Entity('about_category')
@@ -27,4 +28,7 @@ export class AboutCategory {
   @ManyToOne((type) => OriginCategory)
   @JoinColumn([{ name: 'origin_id', referencedColumnName: 'id' }])
   origin: OriginCategory;
+
+  @OneToMany((type) => BaseParts, (baseParts) => baseParts.aboutCategory)
+  baseParts: BaseParts[];
 }

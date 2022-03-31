@@ -29,5 +29,5 @@ export class OriginCategory {
   imgUrlMen: string;
 
   @OneToMany((type) => AboutCategory, (aboutCategory) => aboutCategory.origin)
-  aboutCategory: AboutCategory;
+  aboutCategory: AboutCategory[];
 }

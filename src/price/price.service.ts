@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { get } from 'https';
 import { OrderPlan } from 'src/common/dto/order_plan.dto';
 import { PriceDto } from 'src/common/dto/price.dto';
@@ -21,22 +21,27 @@ import { PriceVio } from 'src/common/entities/price_vio';
 import { PriceVioSet } from 'src/common/entities/price_vio_set';
 import { AboutCategoryRepository } from 'src/common/repository/aboutCategoryRepository';
 import { getManager, getRepository, SelectQueryBuilder } from 'typeorm';
-import { Alias } from 'typeorm/query-builder/Alias';
+import { IdAndNameDto } from '../common/dto/id_and_name.dto';
+import { IncludePartsAndCategoryPriceDto } from '../common/dto/include_parts_and_category_price.dto';
+import { OnlyPriceDto } from '../common/dto/only_price.dto';
+import { BasePartsRepository } from '../common/repository/basePartsRepository';
 
 @Injectable()
 export class PriceService {
   constructor(
     private readonly aboutCategoryRepository: AboutCategoryRepository,
+    private readonly basePartsRepository: BasePartsRepository,
   ) {}
 
-  async getPriceOrderPlan(orderPlan: OrderPlan): Promise<// PriceDto[]
-  any> {
+  async getPriceOrderPlan(
+    orderPlan: OrderPlan,
+  ): Promise<IncludePartsAndCategoryPriceDto> {
     const aboutCategory =
-      await this.aboutCategoryRepository.getAboutCategoryById(
+      await this.aboutCategoryRepository.getIdNameTableNameAboutCategoryJoinOriginCategory(
         orderPlan.aboutCategoryId,
       );
     const excludeGender: number = orderPlan.gender === '男性' ? 1 : 2;
-    const sortPrice = orderPlan.paySystem === '総額' ? 'price' : 'once_price';
+    const sortPrice = orderPlan.paySystem === '総額' ? 'price' : 'oncePrice';
 
     const query = this.selectPriceQueryBuilder(
       aboutCategory.tableName,
@@ -53,13 +58,53 @@ export class PriceService {
       .limit(20)
       .orderBy(`priceTable.${sortPrice}`, 'ASC')
       .getMany();
-    return byAboutCategoryId;
+
+    const parts: IdAndNameDto = orderPlan.partsId
+      ? await this.basePartsRepository.findOne({
+          select: ['id', 'name'],
+          where: { id: orderPlan.partsId },
+        })
+      : null;
+
+    const data: IncludePartsAndCategoryPriceDto = {
+      originCategory: {
+        id: aboutCategory.origin.id,
+        name: aboutCategory.origin.name,
+      },
+      aboutCategory: { id: aboutCategory.id, name: aboutCategory.name },
+      baseParts: parts,
+      prices: byAboutCategoryId,
+    };
+    return data;
   }
 
-  selectPriceQueryBuilder(
-    table: string,
-    excludeGender: number,
-  ): SelectQueryBuilder<any> {
+  async getPlanByClinicId(clinicId: string): Promise<OnlyPriceDto[]> {
+    const data = await getRepository(PriceFaceSet).find({
+      select: [
+        'id',
+        'name',
+        'gender',
+        'times',
+        'price',
+        'oncePrice',
+        'description',
+      ],
+      where: { clinicId: clinicId },
+      take: 2,
+    });
+    const change = data as PriceDto[];
+    const result = change.map((res) => {
+      return OnlyPriceDto.PriceDtoToOnlyPriceDto(res);
+    });
+    return result;
+  }
+
+  times;
+  price;
+  oncePrice;
+  description;
+
+  selectPriceClass(table: string): any {
     const func = {};
     func['PriceUpperFace'] = PriceUpperFace;
     func['PriceLowerFace'] = PriceLowerFace;
@@ -80,10 +125,21 @@ export class PriceService {
     func['PriceLowerBody'] = PriceLowerBody;
 
     const data = func[table];
+    return data;
+  }
+
+  selectPriceQueryBuilder(
+    table: string,
+    excludeGender: number,
+  ): SelectQueryBuilder<any> {
+    const data = this.selectPriceClass(table);
+    if (!data) {
+      throw new NotFoundException(`not found price table at ${data}`);
+    }
     return getRepository(data)
       .createQueryBuilder('priceTable')
       .innerJoinAndSelect('priceTable.clinic', 'clinic')
-      .innerJoinAndSelect('clinic.clinicOprion', 'clinicOprion')
+      .innerJoinAndSelect('clinic.clinicOption', 'clinicOption')
       .where(`priceTable.gender != :x_gender `, {
         x_gender: excludeGender,
       });

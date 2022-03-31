@@ -1,17 +1,41 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Inject,
+  Param,
+  ParseIntPipe,
+  Query,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { take } from 'rxjs';
+import { ClinicNestPriceDto } from '../common/dto/clinic_nest_price.dto';
+import { Clinic } from '../common/entities/clinic';
+import { PagenationParameter } from '../common/parameter/pagenation.parameter';
 import { ClinicService } from './clinic.service';
 
+// @UsePipes(new ValidationPipe())
 @ApiTags('clinic')
 @Controller('clinic')
 export class ClinicController {
-  constructor(
-    @Inject('ClinicService')
-    private readonly clinicService: ClinicService,
-  ) {}
+  constructor(private readonly clinicService: ClinicService) {}
 
-  @Get('test')
-  async test(): Promise<void> {
-    console.log('test');
+  @Get('clinic-nest-price/pagenation')
+  async getAllClinicAndLimit(
+    @Query('take', ParseIntPipe) take: number,
+    @Query('skip', ParseIntPipe) skip: number,
+    // @Query() pagenation: PagenationParameter,
+  ): Promise<ClinicNestPriceDto[]> {
+    const pagenation: PagenationParameter = { take: take, skip: skip };
+    return this.clinicService.getAllClinicAndLimit(pagenation);
+  }
+
+  @Get('clinic-nest-price/area/:areaId/pagenation')
+  async getAllClinicByAreaId(
+    @Param('areaId') areaId: string,
+    @Query() pagenation: PagenationParameter,
+  ): Promise<ClinicNestPriceDto[]> {
+    return this.clinicService.getAllClinicByAreaId(areaId, pagenation);
   }
 }

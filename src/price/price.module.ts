@@ -18,6 +18,9 @@ import { PriceUpperFace } from 'src/common/entities/price_upper_face';
 import { PriceVio } from 'src/common/entities/price_vio';
 import { PriceVioSet } from 'src/common/entities/price_vio_set';
 import { AboutCategoryRepository } from 'src/common/repository/aboutCategoryRepository';
+import { ClinicModule } from '../clinic/clinic.module';
+import { ClinicService } from '../clinic/clinic.service';
+import { BasePartsRepository } from '../common/repository/basePartsRepository';
 import { PriceController } from './price.controller';
 import { PriceService } from './price.service';
 
@@ -42,9 +45,11 @@ import { PriceService } from './price.service';
       PriceVioSet,
       PriceVio,
       AboutCategoryRepository,
+      BasePartsRepository,
     ]),
   ],
   providers: [PriceService],
   controllers: [PriceController],
+  exports: [PriceService],
 })
 export class PriceModule {}

@@ -1,6 +1,7 @@
-import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AboutCategory } from 'src/common/entities/about_category';
+import { IdAndNameDto } from '../common/dto/id_and_name.dto';
 import { AboutCategoryService } from './about-category.service';
 
 @ApiTags('aboutCategory')
@@ -51,5 +52,26 @@ export class AboutCategoryController {
     @Param('originId') originId: string,
   ): Promise<AboutCategory[]> {
     return this.aboutCategoryService.getAllAboutCategoryByOriginId(originId);
+  }
+
+  @Get('id-and-name/sort-selected')
+  @ApiOperation({
+    operationId: 'getBySortSelected',
+    summary: '該当のデータを先頭に並び替え全件取得',
+    description: '該当のデータを先頭に並び替え全件取得',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: IdAndNameDto,
+    isArray: true,
+  })
+  async getBySortSelected(
+    @Query('originCategoryId') originCategoryId: string,
+    @Query('aboutCategoryId') aboutCategoryId?: string,
+  ): Promise<IdAndNameDto[]> {
+    return this.aboutCategoryService.getBySortSelected(
+      originCategoryId,
+      aboutCategoryId,
+    );
   }
 }

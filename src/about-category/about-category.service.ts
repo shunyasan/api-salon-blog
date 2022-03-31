@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AboutCategory } from 'src/common/entities/about_category';
 import { AboutCategoryRepository } from 'src/common/repository/aboutCategoryRepository';
+import { IdAndNameDto } from '../common/dto/id_and_name.dto';
 
 @Injectable()
 export class AboutCategoryService {
@@ -23,5 +24,33 @@ export class AboutCategoryService {
     return await this.aboutCategoryRepository.getAllAboutCategoryByOriginId(
       originId,
     );
+  }
+  async getBySortSelected(
+    originCategoryId: string,
+    aboutCategoryId?: string,
+  ): Promise<IdAndNameDto[]> {
+    const aboutCategories =
+      await this.aboutCategoryRepository.getAllIdAndNameById(originCategoryId);
+    if (!aboutCategoryId) {
+      return aboutCategories;
+    }
+    const sortedAboutCategory = this.sortBySelectData(
+      aboutCategoryId,
+      aboutCategories,
+    );
+    return sortedAboutCategory;
+  }
+
+  sortBySelectData(
+    targetString: string,
+    datas: IdAndNameDto[],
+  ): IdAndNameDto[] {
+    datas.forEach((data, int) => {
+      if (data.id === targetString) {
+        datas.splice(int, 1);
+        datas.unshift(data);
+      }
+    });
+    return datas;
   }
 }

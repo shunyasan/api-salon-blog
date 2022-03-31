@@ -9,7 +9,7 @@ import { OriginCategoryModule } from './origin-category/origin-category.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(),
+    TypeOrmModule.forRoot({}),
     ClinicModule,
     MachineModule,
     PriceModule,

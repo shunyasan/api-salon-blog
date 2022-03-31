@@ -8,7 +8,7 @@ export class PriceDto {
   @IsString()
   @ApiProperty({
     example: 'AAB000001',
-    description: 'Price*ID',
+    description: 'Price{tableName}ID',
   })
   id: string;
 
@@ -41,7 +41,7 @@ export class PriceDto {
     example: 1000,
     description: '1回分の価格',
   })
-  once_price: number;
+  oncePrice: number;
 
   @IsString()
   @ApiProperty({
@@ -56,7 +56,7 @@ export class PriceDto {
     description: '部位',
     type: Parts,
   })
-  parts: Parts;
+  parts?: Parts;
 
   @ValidateNested()
   @Type(() => Clinic)
@@ -64,5 +64,5 @@ export class PriceDto {
     description: 'クリニック',
     type: Clinic,
   })
-  clinic: Clinic;
+  clinic?: Clinic;
 }

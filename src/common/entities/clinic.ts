@@ -50,13 +50,13 @@ export class Clinic {
     comment: 'medhical_loan',
     nullable: true,
   })
-  medhical_loan: string;
+  medhicalLoan: string;
 
   @Column('varchar', { name: 'name', comment: 'name' })
   name: string;
 
   @Column('varchar', { name: 'nearest_station', comment: 'nearest_station' })
-  nearest_station: string;
+  nearestStation: string;
 
   @Column('varchar', { name: 'reserve', comment: 'reserve', nullable: true })
   reserve: string;
@@ -69,14 +69,14 @@ export class Clinic {
     comment: 'room_type',
     nullable: true,
   })
-  room_type: string;
+  roomType: string;
 
   @Column('integer', {
     name: 'staff_gender',
     comment: '0:不明 1:女性 2:男性 3:女性男性',
     default: 0,
   })
-  staff_gender: number;
+  staffGender: number;
 
   @Column('varchar', { name: 'tax', comment: 'tax', nullable: true })
   tax: string;
@@ -115,8 +115,8 @@ export class Clinic {
   )
   clinicOpeningHours: ClinicOpeningHours[];
 
-  @OneToOne((type) => ClinicOption, (clinicOprion) => clinicOprion.clinic)
-  clinicOprion: ClinicOption;
+  @OneToOne((type) => ClinicOption, (clinicOption) => clinicOption.clinic)
+  clinicOption: ClinicOption;
 
   /*
    * Priceのリレーション
