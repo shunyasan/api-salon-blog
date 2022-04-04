@@ -24,6 +24,7 @@ import { getManager, getRepository, SelectQueryBuilder } from 'typeorm';
 import { IdAndNameDto } from '../common/dto/id_and_name.dto';
 import { IncludePartsAndCategoryPriceDto } from '../common/dto/include_parts_and_category_price.dto';
 import { OnlyPriceDto } from '../common/dto/only_price.dto';
+import { PagenationParameter } from '../common/parameter/pagenation.parameter';
 import { BasePartsRepository } from '../common/repository/basePartsRepository';
 
 @Injectable()
@@ -35,6 +36,7 @@ export class PriceService {
 
   async getPriceOrderPlan(
     orderPlan: OrderPlan,
+    pagenation: PagenationParameter,
   ): Promise<IncludePartsAndCategoryPriceDto> {
     const aboutCategory =
       await this.aboutCategoryRepository.getIdNameTableNameAboutCategoryJoinOriginCategory(
@@ -55,8 +57,9 @@ export class PriceService {
     }
 
     const byAboutCategoryId = await query
-      .limit(20)
       .orderBy(`priceTable.${sortPrice}`, 'ASC')
+      .take(pagenation.take)
+      .skip(pagenation.skip)
       .getMany();
 
     const parts: IdAndNameDto = orderPlan.partsId
@@ -78,7 +81,33 @@ export class PriceService {
     return data;
   }
 
-  async getPlanByClinicId(clinicId: string): Promise<OnlyPriceDto[]> {
+  async getCountMaxPlan(orderPlan: OrderPlan): Promise<number> {
+    const aboutCategory =
+      await this.aboutCategoryRepository.getIdNameTableNameAboutCategoryJoinOriginCategory(
+        orderPlan.aboutCategoryId,
+      );
+    const excludeGender: number = orderPlan.gender === '男性' ? 1 : 2;
+
+    const query = this.selectPriceQueryBuilder(
+      aboutCategory.tableName,
+      excludeGender,
+    );
+
+    if (orderPlan.partsId) {
+      query.andWhere(`priceTable.parts_id = :x_parts_id `, {
+        x_parts_id: orderPlan.partsId,
+      });
+    }
+
+    const getCount = await query.select('COUNT(priceTable.id)').getRawOne();
+    const count = Number(getCount.count);
+    return count;
+  }
+
+  async getPlanByClinicId(
+    clinicId: string,
+    pagenation?: PagenationParameter,
+  ): Promise<OnlyPriceDto[]> {
     const data = await getRepository(PriceFaceSet).find({
       select: [
         'id',
@@ -90,7 +119,8 @@ export class PriceService {
         'description',
       ],
       where: { clinicId: clinicId },
-      take: 2,
+      take: pagenation ? pagenation.take : 2,
+      skip: pagenation ? pagenation.skip : 0,
     });
     const change = data as PriceDto[];
     const result = change.map((res) => {
@@ -98,11 +128,6 @@ export class PriceService {
     });
     return result;
   }
-
-  times;
-  price;
-  oncePrice;
-  description;
 
   selectPriceClass(table: string): any {
     const func = {};
@@ -139,6 +164,13 @@ export class PriceService {
     return getRepository(data)
       .createQueryBuilder('priceTable')
       .innerJoinAndSelect('priceTable.clinic', 'clinic')
+      .innerJoinAndSelect('priceTable.parts', 'parts')
+      .innerJoinAndSelect(
+        'parts.baseParts',
+        'baseParts',
+        'baseParts.gender != :x_gender',
+        { x_gender: excludeGender },
+      )
       .innerJoinAndSelect('clinic.clinicOption', 'clinicOption')
       .where(`priceTable.gender != :x_gender `, {
         x_gender: excludeGender,

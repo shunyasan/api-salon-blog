@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Clinic } from './clinic';
 import { Parts } from './parts';
@@ -31,13 +32,15 @@ export class PriceArm {
   @Column('varchar', { name: 'parts_id', comment: '部位ID' })
   partsId: string;
 
+  @Column('varchar', { name: 'clinic_id', comment: 'クリニックID' })
+  clinicId: string;
+
+  @Exclude()
   @ManyToOne((type) => Parts)
   @JoinColumn([{ name: 'parts_id', referencedColumnName: 'id' }])
   parts: Parts;
 
-  @Column('varchar', { name: 'clinic_id', comment: 'クリニックID' })
-  clinicId: string;
-
+  @Exclude()
   @ManyToOne((type) => Clinic)
   @JoinColumn([{ name: 'clinic_id', referencedColumnName: 'id' }])
   clinic: Clinic;

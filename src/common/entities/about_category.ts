@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { Entity, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { BaseParts } from './base_parts';
 import { OriginCategory } from './origin_category';
@@ -25,10 +26,12 @@ export class AboutCategory {
   @Column('varchar', { name: 'origin_id', comment: '広域カテゴリID' })
   originId: string;
 
+  @Exclude()
   @ManyToOne((type) => OriginCategory)
   @JoinColumn([{ name: 'origin_id', referencedColumnName: 'id' }])
   origin: OriginCategory;
 
+  @Exclude()
   @OneToMany((type) => BaseParts, (baseParts) => baseParts.aboutCategory)
   baseParts: BaseParts[];
 }

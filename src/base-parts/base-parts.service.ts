@@ -25,9 +25,11 @@ export class BasePartsService {
 
   async getAllBasePartsByAboutCategoryId(
     aboutCategoryId: string,
+    gender?: string,
   ): Promise<BaseParts[]> {
     return await this.basePartsRepository.getAllBasePartsByAboutCategoryId(
       aboutCategoryId,
+      gender,
     );
   }
 

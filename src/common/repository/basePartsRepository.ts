@@ -1,4 +1,4 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, Not, Repository } from 'typeorm';
 import { IdAndNameDto } from '../dto/id_and_name.dto';
 import { BaseParts } from '../entities/base_parts';
 
@@ -28,9 +28,13 @@ export class BasePartsRepository extends Repository<BaseParts> {
     });
   }
 
-  async getAllBasePartsByAboutCategoryId(id: string): Promise<BaseParts[]> {
+  async getAllBasePartsByAboutCategoryId(
+    id: string,
+    gender?: string,
+  ): Promise<BaseParts[]> {
+    const genderNum = gender && gender === '男性' ? 1 : 2;
     return await this.find({
-      aboutCategoryId: id,
+      where: { aboutCategoryId: id, gender: gender ? Not(genderNum) : 3 },
     });
   }
 }

@@ -69,6 +69,7 @@ export class ClinicNestPriceDto {
     example: '3.7',
     description: 'レビュー',
   })
+  @Type(() => Number)
   @IsNumber()
   review: number;
 
@@ -84,6 +85,7 @@ export class ClinicNestPriceDto {
     description: '性別　1:女性 2:男性 3:女性・男性',
   })
   @IsNumber()
+  @Type(() => Number)
   staffGender: number;
 
   @ApiProperty({

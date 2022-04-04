@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { Entity, Column, OneToMany } from 'typeorm';
 import { Clinic } from './clinic';
 
@@ -12,6 +13,7 @@ export class ClinicGroup {
   @Column('varchar', { name: 'group_name', comment: 'group_name' })
   groupName: string;
 
+  @Exclude()
   @OneToMany((type) => Clinic, (clinic) => clinic.clinicGroup)
   clinic: Clinic[];
 }

@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { Entity, Column, OneToMany } from 'typeorm';
 import { AboutCategory } from './about_category';
 
@@ -28,6 +29,7 @@ export class OriginCategory {
   })
   imgUrlMen: string;
 
+  @Exclude()
   @OneToMany((type) => AboutCategory, (aboutCategory) => aboutCategory.origin)
   aboutCategory: AboutCategory[];
 }

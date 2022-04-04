@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { Entity, Column, JoinColumn, OneToOne } from 'typeorm';
 import { Clinic } from './clinic';
 
@@ -71,6 +72,7 @@ export class ClinicOption {
   @Column('varchar', { name: 'clinic_id', comment: 'clinicId' })
   clinicId: string;
 
+  @Exclude()
   @OneToOne((type) => Clinic)
   @JoinColumn([{ name: 'clinic_id', referencedColumnName: 'id' }])
   clinic: Clinic;

@@ -14,6 +14,7 @@ export class Parts {
   @Column('integer', { name: 'places', comment: '箇所数' })
   places: number;
 
+  @Exclude()
   @ManyToMany((type) => BaseParts, (baseParts) => baseParts.parts)
   baseParts: BaseParts[];
 }

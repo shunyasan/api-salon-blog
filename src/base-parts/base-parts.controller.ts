@@ -50,9 +50,11 @@ export class BasePartsController {
   })
   async getAllBasePartsByAboutCategoryId(
     @Param('aboutCategoryId') aboutCategoryId: string,
+    @Query('gender') gender?: string,
   ): Promise<BaseParts[]> {
     return this.basePartsService.getAllBasePartsByAboutCategoryId(
       aboutCategoryId,
+      gender,
     );
   }
 

@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { Entity, Column, OneToMany } from 'typeorm';
 import { Machine } from './machine';
 
@@ -21,6 +22,7 @@ export class MachineShr {
   @Column('integer', { name: 'skin_color', comment: '対応可な肌の色' })
   skinColor: number;
 
+  @Exclude()
   @OneToMany((type) => Machine, (machine) => machine.machineShr)
   machine: Machine[];
 }

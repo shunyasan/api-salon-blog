@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Exclude, Type } from 'class-transformer';
 import { IsString, ValidateNested } from 'class-validator';
 import { Clinic } from '../entities/clinic';
 import { Parts } from '../entities/parts';
@@ -50,19 +50,35 @@ export class PriceDto {
   })
   description: string;
 
+  @IsString()
+  @ApiProperty({
+    example: 'B000001',
+    description: '部位ID',
+  })
+  partsId: string;
+
+  @IsString()
+  @ApiProperty({
+    example: 'AA000001',
+    description: 'クリニックID',
+  })
+  clinicId: string;
+
+  @Exclude()
   @ValidateNested()
   @Type(() => Parts)
   @ApiProperty({
     description: '部位',
     type: Parts,
   })
-  parts?: Parts;
+  parts: Parts;
 
+  @Exclude()
   @ValidateNested()
   @Type(() => Clinic)
   @ApiProperty({
     description: 'クリニック',
     type: Clinic,
   })
-  clinic?: Clinic;
+  clinic: Clinic;
 }

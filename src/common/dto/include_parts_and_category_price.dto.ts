@@ -11,18 +11,21 @@ export class IncludePartsAndCategoryPriceDto {
     type: IdAndNameDto,
     description: '広域カテゴリ[id,name]',
   })
+  @Type(() => IdAndNameDto)
   originCategory: IdAndNameDto;
 
   @ApiProperty({
     type: IdAndNameDto,
     description: '詳細カテゴリ[id,name]',
   })
+  @Type(() => IdAndNameDto)
   aboutCategory: IdAndNameDto;
 
   @ApiProperty({
     type: IdAndNameDto,
     description: '部位[id,name]',
   })
+  @Type(() => IdAndNameDto)
   baseParts: IdAndNameDto;
 
   @ApiProperty({
@@ -30,5 +33,6 @@ export class IncludePartsAndCategoryPriceDto {
     isArray: true,
     type: PriceDto,
   })
+  @Type(() => PriceDto)
   prices: PriceDto[];
 }

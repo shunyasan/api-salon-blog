@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import {
   Entity,
   Column,
@@ -97,24 +98,29 @@ export class Clinic {
   })
   clinicGroupId: string;
 
+  @Exclude()
   @ManyToOne((type) => ClinicGroup)
   @JoinColumn([{ name: 'clinic_group_id', referencedColumnName: 'id' }])
   clinicGroup: ClinicGroup;
 
+  @Exclude()
   @ManyToOne((type) => ClinicArea)
   @JoinColumn([{ name: 'area_id', referencedColumnName: 'id' }])
   area: ClinicArea;
 
+  @Exclude()
   @ManyToMany((type) => Machine, (machines) => machines.clinics)
   @JoinTable({ name: 'clinics_machines' })
   machines: Machine[];
 
+  @Exclude()
   @OneToMany(
     (type) => ClinicOpeningHours,
     (clinicOpeningHours) => clinicOpeningHours.clinic,
   )
   clinicOpeningHours: ClinicOpeningHours[];
 
+  @Exclude()
   @OneToOne((type) => ClinicOption, (clinicOption) => clinicOption.clinic)
   clinicOption: ClinicOption;
 
@@ -122,69 +128,86 @@ export class Clinic {
    * Priceのリレーション
    */
 
+  @Exclude()
   @OneToMany((type) => PriceAllBody, (priceAllBody) => priceAllBody.clinic)
   priceAllBody: PriceAllBody[];
 
+  @Exclude()
   @OneToMany((type) => PriceArm, (priceArm) => priceArm.clinic)
   priceArm: PriceArm[];
 
+  @Exclude()
   @OneToMany((type) => PriceBackBody, (priceBackBody) => priceBackBody.clinic)
   priceBackBody: PriceBackBody[];
 
+  @Exclude()
   @OneToMany((type) => PriceBodySet, (priceBodySet) => priceBodySet.clinic)
   priceBodySet: PriceBodySet[];
 
+  @Exclude()
   @OneToMany((type) => PriceFaceSet, (priceFaceSet) => priceFaceSet.clinic)
   priceFaceSet: PriceFaceSet[];
 
+  @Exclude()
   @OneToMany(
     (type) => PriceFrontBody,
     (priceFrontBody) => priceFrontBody.clinic,
   )
   priceFrontBody: PriceFrontBody[];
 
+  @Exclude()
   @OneToMany((type) => PriceLeg, (priceLeg) => priceLeg.clinic)
   priceLeg: PriceLeg[];
 
+  @Exclude()
   @OneToMany((type) => PriceLimb, (priceLimb) => priceLimb.clinic)
   priceLimb: PriceLimb[];
 
+  @Exclude()
   @OneToMany(
     (type) => PriceLowerBody,
     (priceLowerBody) => priceLowerBody.clinic,
   )
   priceLowerBody: PriceLowerBody[];
 
+  @Exclude()
   @OneToMany(
     (type) => PriceLowerFace,
     (priceLowerFace) => priceLowerFace.clinic,
   )
   priceLowerFace: PriceLowerFace[];
 
+  @Exclude()
   @OneToMany((type) => PriceRange, (priceRange) => priceRange.clinic)
   priceRange: PriceRange[];
 
+  @Exclude()
   @OneToMany((type) => PriceSelect, (priceSelect) => priceSelect.clinic)
   priceSelect: PriceSelect[];
 
+  @Exclude()
   @OneToMany((type) => PriceTime, (priceTime) => priceTime.clinic)
   priceTime: PriceTime[];
 
+  @Exclude()
   @OneToMany(
     (type) => PriceUpperBody,
     (priceUpperBody) => priceUpperBody.clinic,
   )
   priceUpperBody: PriceUpperBody[];
 
+  @Exclude()
   @OneToMany(
     (type) => PriceUpperFace,
     (priceUpperFace) => priceUpperFace.clinic,
   )
   priceUpperFace: PriceUpperFace[];
 
+  @Exclude()
   @OneToMany((type) => PriceVioSet, (priceVioSet) => priceVioSet.clinic)
   priceVioSet: PriceVioSet[];
 
+  @Exclude()
   @OneToMany((type) => PriceVio, (priceVio) => priceVio.clinic)
   priceVio: PriceVio[];
 }

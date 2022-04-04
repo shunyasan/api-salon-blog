@@ -5,7 +5,7 @@
   "username": "postgres",
   "password": "shunya416#",
   "database": "salon_db",
-  "synchronize": true,
+  "synchronize": false,
   "logging": false,
   "entities": ["dist/common/entities/*.js"],
   "migrations": ["dist/migration/*.js"],

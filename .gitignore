@@ -14,6 +14,9 @@ lerna-debug.log*
 # OS
 .DS_Store
 
+# Migration
+/src/migration
+
 # Tests
 /coverage
 /.nyc_output

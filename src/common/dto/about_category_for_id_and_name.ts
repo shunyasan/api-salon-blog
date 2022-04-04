@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import { IsString } from 'class-validator';
 import { IdAndNameDto } from './id_and_name.dto';
 
@@ -29,5 +30,6 @@ export class AboutCategoryForIdAndName {
     description: '価格テーブル名',
   })
   @IsString()
+  @Type(() => IdAndNameDto)
   origin: IdAndNameDto;
 }

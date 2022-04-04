@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { Entity, Column, ManyToOne, JoinColumn, ManyToMany } from 'typeorm';
 import { Clinic } from './clinic';
 import { MachineHr } from './machine_hr';
@@ -18,10 +19,6 @@ export class Machine {
   })
   machineHrId: string;
 
-  @ManyToOne((type) => MachineHr)
-  @JoinColumn([{ name: 'machine_hr_id', referencedColumnName: 'id' }])
-  machineHr: MachineHr;
-
   @Column('varchar', {
     name: 'machine_shr_id',
     comment: 'SHR機器ID',
@@ -29,10 +26,17 @@ export class Machine {
   })
   machineShrId: string;
 
+  @Exclude()
+  @ManyToOne((type) => MachineHr)
+  @JoinColumn([{ name: 'machine_hr_id', referencedColumnName: 'id' }])
+  machineHr: MachineHr;
+
+  @Exclude()
   @ManyToOne((type) => MachineShr)
   @JoinColumn([{ name: 'machine_shr_id', referencedColumnName: 'id' }])
   machineShr: MachineShr;
 
+  @Exclude()
   @ManyToMany((type) => Clinic, (clinics) => clinics.machines)
   clinics: Clinic[];
 }

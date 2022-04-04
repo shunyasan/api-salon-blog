@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AboutCategoryModule } from './about-category/about-category.module';
 import { BasePartsModule } from './base-parts/base-parts.module';
 import { OriginCategoryModule } from './origin-category/origin-category.module';
+import { ClinicAreaController } from './clinic-area/clinic-area.controller';
+import { ClinicAreaModule } from './clinic-area/clinic-area.module';
 
 @Module({
   imports: [
@@ -16,6 +18,7 @@ import { OriginCategoryModule } from './origin-category/origin-category.module';
     AboutCategoryModule,
     BasePartsModule,
     OriginCategoryModule,
+    ClinicAreaModule,
   ],
 })
 export class AppModule {}

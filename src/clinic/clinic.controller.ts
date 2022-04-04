@@ -15,7 +15,7 @@ import { Clinic } from '../common/entities/clinic';
 import { PagenationParameter } from '../common/parameter/pagenation.parameter';
 import { ClinicService } from './clinic.service';
 
-// @UsePipes(new ValidationPipe())
+@UsePipes(new ValidationPipe({ transform: true }))
 @ApiTags('clinic')
 @Controller('clinic')
 export class ClinicController {
@@ -23,11 +23,8 @@ export class ClinicController {
 
   @Get('clinic-nest-price/pagenation')
   async getAllClinicAndLimit(
-    @Query('take', ParseIntPipe) take: number,
-    @Query('skip', ParseIntPipe) skip: number,
-    // @Query() pagenation: PagenationParameter,
+    @Query() pagenation: PagenationParameter,
   ): Promise<ClinicNestPriceDto[]> {
-    const pagenation: PagenationParameter = { take: take, skip: skip };
     return this.clinicService.getAllClinicAndLimit(pagenation);
   }
 
