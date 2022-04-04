@@ -6,7 +6,6 @@ import {
   ValidateIf,
   ValidateNested,
 } from 'class-validator';
-import { PagenationParameter } from '../parameter/pagenation.parameter';
 
 export class OrderPlan {
   @IsString()
