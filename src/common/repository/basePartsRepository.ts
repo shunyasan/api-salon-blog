@@ -15,10 +15,11 @@ export class BasePartsRepository extends Repository<BaseParts> {
   async getAllBasePartsIdAndName(
     aboutCategoryId: string,
   ): Promise<IdAndNameDto[]> {
-    return await this.find({
+    const data = await this.find({
       select: ['id', 'name'],
       where: { aboutCategoryId: aboutCategoryId },
     });
+    return data;
   }
 
   async getAllIdAndNameById(id: string): Promise<IdAndNameDto[]> {

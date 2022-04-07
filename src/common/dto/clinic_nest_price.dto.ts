@@ -5,7 +5,6 @@ import { Clinic } from '../entities/clinic';
 import { ClinicOpeningHours } from '../entities/clinic_opening_hours';
 import { ClinicOption } from '../entities/clinic_option';
 import { IdAndNameDto } from './id_and_name.dto';
-import { OnlyPriceDto } from './only_price.dto';
 import { PriceDto } from './price.dto';
 
 export class ClinicNestPriceDto {
@@ -121,12 +120,12 @@ export class ClinicNestPriceDto {
   clinicOption: ClinicOption;
 
   @ValidateNested()
-  @Type(() => OnlyPriceDto)
-  onlyPrices: OnlyPriceDto[];
+  @Type(() => PriceDto)
+  prices: PriceDto[];
 
   static ClinicToClinicNestPriceDto(
     clinic: Clinic,
-    onlyPrices: OnlyPriceDto[],
+    prices: PriceDto[],
   ): ClinicNestPriceDto {
     const data: ClinicNestPriceDto = {
       id: clinic.id,
@@ -146,7 +145,7 @@ export class ClinicNestPriceDto {
       areaId: clinic.areaId,
       clinicOpeningHours: clinic.clinicOpeningHours,
       clinicOption: clinic.clinicOption,
-      onlyPrices: onlyPrices,
+      prices: prices,
     };
     return data;
   }

@@ -7,7 +7,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 
-export class OrderPlan {
+export class OrderPlanParameter {
   @IsString()
   @ApiProperty({
     example: '女性',
@@ -48,7 +48,7 @@ export class OrderPlan {
   @IsOptional()
   @ValidateIf((val) => val.skinCollor)
   @ApiPropertyOptional({
-    example: '色黒',
+    example: '白色',
     description: '肌色',
   })
   skinCollor?: string;

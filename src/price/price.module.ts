@@ -21,6 +21,9 @@ import { AboutCategoryRepository } from 'src/common/repository/aboutCategoryRepo
 import { ClinicModule } from '../clinic/clinic.module';
 import { ClinicService } from '../clinic/clinic.service';
 import { BasePartsRepository } from '../common/repository/basePartsRepository';
+import { MachineRepository } from '../common/repository/machineRepository';
+import { OriginCategoryRepository } from '../common/repository/originCategoryRepository';
+import { MachineModule } from '../machine/machine.module';
 import { PriceController } from './price.controller';
 import { PriceService } from './price.service';
 
@@ -44,9 +47,11 @@ import { PriceService } from './price.service';
       PriceUpperFace,
       PriceVioSet,
       PriceVio,
+      OriginCategoryRepository,
       AboutCategoryRepository,
       BasePartsRepository,
     ]),
+    MachineModule,
   ],
   providers: [PriceService],
   controllers: [PriceController],

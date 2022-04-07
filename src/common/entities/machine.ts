@@ -29,12 +29,12 @@ export class Machine {
   @Exclude()
   @ManyToOne((type) => MachineHr)
   @JoinColumn([{ name: 'machine_hr_id', referencedColumnName: 'id' }])
-  machineHr: MachineHr;
+  machineHr: MachineHr[];
 
   @Exclude()
   @ManyToOne((type) => MachineShr)
   @JoinColumn([{ name: 'machine_shr_id', referencedColumnName: 'id' }])
-  machineShr: MachineShr;
+  machineShr: MachineShr[];
 
   @Exclude()
   @ManyToMany((type) => Clinic, (clinics) => clinics.machines)

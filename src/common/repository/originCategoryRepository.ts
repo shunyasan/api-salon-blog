@@ -5,7 +5,8 @@ import { OriginCategory } from '../entities/origin_category';
 @EntityRepository(OriginCategory)
 export class OriginCategoryRepository extends Repository<OriginCategory> {
   async getAllOriginCategory(): Promise<OriginCategory[]> {
-    return await this.find();
+    const data = await this.find({ order: { id: 'ASC' } });
+    return data;
   }
 
   async getOriginCategoryById(id: string): Promise<OriginCategory> {

@@ -1,5 +1,4 @@
 import { EntityRepository, Repository } from 'typeorm';
-import { AboutCategoryForIdAndName } from '../dto/about_category_for_id_and_name';
 import { IdAndNameDto } from '../dto/id_and_name.dto';
 import { AboutCategory } from '../entities/about_category';
 
@@ -13,26 +12,23 @@ export class AboutCategoryRepository extends Repository<AboutCategory> {
     return await this.findOne({ id: id });
   }
 
-  async getIdNameTableNameAboutCategoryJoinOriginCategory(
-    id: string,
-  ): Promise<AboutCategoryForIdAndName> {
-    return await this.createQueryBuilder('aboutCategory')
-      .select([
-        'aboutCategory.id',
-        'aboutCategory.name',
-        'aboutCategory.tableName',
-        'originCategory.id',
-        'originCategory.name',
-      ])
-      .innerJoinAndSelect('aboutCategory.origin', 'originCategory')
-      .where('aboutCategory.id = :x_id', { x_id: id })
-      .getOne();
+  async getPriceTableName(id: string): Promise<string> {
+    const getTableName = await this.findOne({
+      select: ['tableName'],
+      where: { id: id },
+    });
+    const data = getTableName.tableName;
+    return data;
   }
 
   async getAllAboutCategoryByOriginId(
     originId: string,
   ): Promise<AboutCategory[]> {
-    return await this.find({ originId: originId });
+    const data = await this.find({
+      where: { originId: originId },
+      order: { id: 'ASC' },
+    });
+    return data;
   }
 
   async getAllIdAndNameById(id: string): Promise<IdAndNameDto[]> {

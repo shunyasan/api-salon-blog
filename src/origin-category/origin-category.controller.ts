@@ -1,9 +1,18 @@
-import { Controller, Get, HttpStatus, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Query,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { OriginCategory } from 'src/common/entities/origin_category';
 import { IdAndNameDto } from '../common/dto/id_and_name.dto';
 import { OriginCategoryService } from './origin-category.service';
 
+@UsePipes(new ValidationPipe({ transform: true }))
 @ApiTags('originCategory')
 @Controller('origin-category')
 export class OriginCategoryController {
@@ -63,8 +72,8 @@ export class OriginCategoryController {
   })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: IdAndNameDto,
     isArray: true,
+    type: IdAndNameDto,
   })
   async getBySortSelected(
     @Query('originCategoryId') originCategoryId: string,

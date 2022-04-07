@@ -1,1 +1,47 @@
-import { Injectable } from '@nestjs/common';@Injectable()export class MachineService {}
+import { Injectable } from '@nestjs/common';
+import { IdAndNameDto } from '../common/dto/id_and_name.dto';
+import { OrderPlanParameter } from '../common/parameter/order_plan.parameter';
+import { MachineRepository } from '../common/repository/machineRepository';
+
+@Injectable()
+export class MachineService {
+  constructor(private readonly machineRepository: MachineRepository) {}
+
+  async getIdfindBySkinColorAndHairType(
+    skinColor?: string,
+    hair?: string,
+  ): Promise<IdAndNameDto[]> {
+    const skin = skinColor && this.selectSkinColor(skinColor);
+    const hairType = hair && this.selectHairType(hair);
+    const machines =
+      await this.machineRepository.getIdfindBySkinColorAndHairType(
+        skin,
+        hairType,
+      );
+    return machines;
+  }
+
+  selectSkinColor(skiColor: string) {
+    const func: any = {};
+    func['白色'] = 1;
+    func['薄茶色'] = 2;
+    func['色黒'] = 3;
+    const skinNumber = func[skiColor];
+    if (!skinNumber) {
+      throw new Error('対応不可の肌色です');
+    }
+    return skinNumber as number;
+  }
+
+  selectHairType(hair: string) {
+    const func: any = {};
+    func['産毛'] = 'soft';
+    func['標準'] = 'standard';
+    func['太い'] = 'hard';
+    const changedHair = func[hair];
+    if (!changedHair) {
+      throw new Error('対応不可の毛の状態です');
+    }
+    return changedHair as string;
+  }
+}

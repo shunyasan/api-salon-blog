@@ -46,6 +46,7 @@ export class BasePartsController {
   })
   @ApiResponse({
     status: HttpStatus.OK,
+    isArray: true,
     type: BaseParts,
   })
   async getAllBasePartsByAboutCategoryId(
@@ -66,7 +67,8 @@ export class BasePartsController {
   })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: BaseParts,
+    isArray: true,
+    type: IdAndNameDto,
   })
   async getAllBasePartsIdAndName(
     @Param('aboutCategoryId') aboutCategoryId: string,
@@ -82,8 +84,8 @@ export class BasePartsController {
   })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: IdAndNameDto,
     isArray: true,
+    type: IdAndNameDto,
   })
   async getBySortSelected(
     @Query('aboutCategoryId') aboutCategoryId: string,
