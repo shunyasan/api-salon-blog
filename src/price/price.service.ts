@@ -160,6 +160,8 @@ export class PriceService {
     return getRepository(data)
       .createQueryBuilder('priceTable')
       .innerJoinAndSelect('priceTable.clinic', 'clinic')
+      .innerJoinAndSelect('clinic.clinicOption', 'clinicOption')
+      .innerJoinAndSelect('clinic.clinicOpeningHours', 'clinicOpeningHours')
       .innerJoin('priceTable.parts', 'parts')
       .innerJoinAndSelect(
         'parts.baseParts',
@@ -167,7 +169,6 @@ export class PriceService {
         'baseParts.gender != :x_gender',
         { x_gender: excludeGender },
       )
-      .innerJoinAndSelect('clinic.clinicOption', 'clinicOption')
       .where(`priceTable.gender != :x_gender `, {
         x_gender: excludeGender,
       });

@@ -8,6 +8,7 @@ import { BasePartsModule } from './base-parts/base-parts.module';
 import { OriginCategoryModule } from './origin-category/origin-category.module';
 import { ClinicAreaController } from './clinic-area/clinic-area.controller';
 import { ClinicAreaModule } from './clinic-area/clinic-area.module';
+import { FeatureModule } from './feature/feature.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ClinicAreaModule } from './clinic-area/clinic-area.module';
     BasePartsModule,
     OriginCategoryModule,
     ClinicAreaModule,
+    FeatureModule,
   ],
 })
 export class AppModule {}
