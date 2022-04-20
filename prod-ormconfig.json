@@ -1,0 +1,18 @@
+{
+  "type": "postgres",
+  "host": "salon-blog-db-dev.cnvcptdhv02a.ap-northeast-1.rds.amazonaws.com",
+  "port": 5432,
+  "username": "postgres",
+  "password": "shunya416#",
+  "database": "salon_db",
+  "synchronize": false,
+  "logging": false,
+  "entities": ["dist/common/entities/*.js"],
+  "migrations": ["dist/migration/*.js"],
+  "subscribers": ["src/subscriber/**/*.js"],
+  "cli": {
+    "entitiesDir": "src/common/entities",
+    "migrationsDir": "src/migration",
+    "subscribersDir": "src/subscriber"
+  }
+}

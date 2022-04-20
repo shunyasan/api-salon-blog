@@ -9,6 +9,8 @@ import { OriginCategoryModule } from './origin-category/origin-category.module';
 import { ClinicAreaController } from './clinic-area/clinic-area.controller';
 import { ClinicAreaModule } from './clinic-area/clinic-area.module';
 import { FeatureModule } from './feature/feature.module';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -22,5 +24,7 @@ import { FeatureModule } from './feature/feature.module';
     ClinicAreaModule,
     FeatureModule,
   ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
