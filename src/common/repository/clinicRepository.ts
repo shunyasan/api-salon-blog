@@ -9,6 +9,13 @@ export class ClinicRepository extends Repository<Clinic> {
     return await query.take(take).skip(skip).getMany();
   }
 
+  async getOneClinicAndLimit(clinicId: string): Promise<Clinic> {
+    const query = this.selectQueryFeature();
+    return await query
+      .where('clinic.id = :x_clinicId', { x_clinicId: clinicId })
+      .getOne();
+  }
+
   async getFreeAnesthesia(
     take: number,
     skip: number,

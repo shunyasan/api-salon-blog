@@ -21,6 +21,15 @@ export class AboutCategoryRepository extends Repository<AboutCategory> {
     return data;
   }
 
+  async getAllPriceTableName(originId: string): Promise<string[]> {
+    const getTableName = await this.find({
+      select: ['tableName'],
+      where: { originId: originId },
+    });
+    const data = getTableName.map((res) => res.tableName);
+    return data;
+  }
+
   async getAllAboutCategoryByOriginId(
     originId: string,
   ): Promise<AboutCategory[]> {

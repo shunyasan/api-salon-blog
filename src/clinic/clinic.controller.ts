@@ -39,6 +39,22 @@ export class ClinicController {
     return this.clinicService.getAllClinicAndLimit(pagenation);
   }
 
+  @Get(':clinicId')
+  @ApiOperation({
+    operationId: 'getOneClinicAndLimit',
+    summary: 'クリニック1件をparameterで受け取った条件で取得',
+    description: 'クリニック1件をparameterで受け取った条件で取得',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: ClinicNestPriceDto,
+  })
+  async getOneClinicAndLimit(
+    @Param('clinicId') clinicId: string,
+  ): Promise<Clinic> {
+    return this.clinicService.getOneClinicAndLimit(clinicId);
+  }
+
   @Get('clinic-nest-price/area/:areaId/pagenation')
   @ApiOperation({
     operationId: 'getAllClinicByAreaId',

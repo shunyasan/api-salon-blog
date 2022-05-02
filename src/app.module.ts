@@ -11,6 +11,7 @@ import { ClinicAreaModule } from './clinic-area/clinic-area.module';
 import { FeatureModule } from './feature/feature.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { IdAndNameModule } from './id-and-name/id-and-name.module';
 
 @Module({
   imports: [
@@ -23,8 +24,7 @@ import { AppService } from './app.service';
     OriginCategoryModule,
     ClinicAreaModule,
     FeatureModule,
+    IdAndNameModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

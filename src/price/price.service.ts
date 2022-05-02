@@ -46,7 +46,10 @@ export class PriceService {
     );
     const excludeGender: number = orderPlan.gender === '男性' ? 1 : 2;
 
-    const query = this.selectPriceQueryBuilder(tableName, excludeGender);
+    const query = this.selectPriceJoinClinicQueryBuilder(
+      tableName,
+      excludeGender,
+    );
     if (orderPlan.partsId) {
       query.andWhere(`priceTable.parts_id = :x_parts_id `, {
         x_parts_id: orderPlan.partsId,
@@ -66,6 +69,19 @@ export class PriceService {
         });
     }
     return query;
+  }
+
+  async getPriceByClinic(
+    clinicId: string,
+    aboutId: string,
+  ): Promise<PriceDto[]> {
+    const table = await this.aboutCategoryRepository.getPriceTableName(aboutId);
+    const data = this.selectPriceClass(table);
+    const price = await getRepository(data).find({
+      where: { clinicId: clinicId },
+    });
+    const res = price as PriceDto[];
+    return res;
   }
 
   async getPriceOrderPlan(
@@ -146,17 +162,17 @@ export class PriceService {
     func['PriceLowerBody'] = PriceLowerBody;
 
     const data = func[table];
-    return data;
-  }
-
-  selectPriceQueryBuilder(
-    table: string,
-    excludeGender: number,
-  ): SelectQueryBuilder<any> {
-    const data = this.selectPriceClass(table);
     if (!data) {
       throw new NotFoundException(`not found price table at ${data}`);
     }
+    return data;
+  }
+
+  selectPriceJoinClinicQueryBuilder(
+    table: string,
+    excludeGender?: number,
+  ): SelectQueryBuilder<any> {
+    const data = this.selectPriceClass(table);
     return getRepository(data)
       .createQueryBuilder('priceTable')
       .innerJoinAndSelect('priceTable.clinic', 'clinic')

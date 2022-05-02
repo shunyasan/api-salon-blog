@@ -27,7 +27,7 @@ export class OriginCategoryService {
 
   async getBySortSelected(originCategoryId: string): Promise<IdAndNameDto[]> {
     const originCategories =
-      await this.originCategoryRepository.getAllIdAndNameById();
+      await this.originCategoryRepository.getAllIdAndName();
     const sortedAboutCategory = this.sortBySelectData(
       originCategoryId,
       originCategories,

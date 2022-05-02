@@ -70,4 +70,22 @@ export class PriceController {
   ): Promise<PriceDto[]> {
     return this.priceService.getPlanByClinicId(clinicId, pagenation);
   }
+
+  @Get('clinic/:clinicId')
+  @ApiOperation({
+    operationId: 'getPriceByClinic',
+    summary: 'クリニックごとの指定したAboutCategoryIdから価格を表示',
+    description: 'クリニックごとの指定したAboutCategoryIdから価格を表示',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    isArray: true,
+    type: PriceDto,
+  })
+  async getPriceByClinic(
+    @Param('clinicId') clinicId: string,
+    @Query('aboutId') aboutId: string,
+  ): Promise<PriceDto[]> {
+    return this.priceService.getPriceByClinic(clinicId, aboutId);
+  }
 }

@@ -29,6 +29,16 @@ export class ClinicService {
     return nestPrice;
   }
 
+  async getOneClinicAndLimit(clinicId: string): Promise<Clinic> {
+    const clinic = await this.clinicRepository.getOneClinicAndLimit(clinicId);
+    // const prices = await this.priceService.getPlanByClinicId(clinic.id);
+    // const nestPrice = ClinicNestPriceDto.ClinicToClinicNestPriceDto(
+    //   clinic,
+    //   prices,
+    // );
+    return clinic;
+  }
+
   async getAllClinicByAreaId(
     areaId: string,
     pagenation: PagenationParameter,

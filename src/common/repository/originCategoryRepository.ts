@@ -1,4 +1,4 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, Repository, SelectQueryBuilder } from 'typeorm';
 import { IdAndNameDto } from '../dto/id_and_name.dto';
 import { OriginCategory } from '../entities/origin_category';
 
@@ -20,7 +20,12 @@ export class OriginCategoryRepository extends Repository<OriginCategory> {
       .getMany();
   }
 
-  async getAllIdAndNameById(): Promise<IdAndNameDto[]> {
-    return await this.find({ select: ['id', 'name'] });
+  async getAllIdAndName(): Promise<IdAndNameDto[]> {
+    const get = await this.find({
+      select: ['id', 'name'],
+      order: { id: 'ASC' },
+    });
+    const change = get as IdAndNameDto[];
+    return change;
   }
 }

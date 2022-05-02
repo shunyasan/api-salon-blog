@@ -13,10 +13,10 @@ custom:
 
 package:
   individually: true
-  include:
-    - dist/**
   exclude:
-    - '**'
+    - 'src/*'
+    - 'test/*'
+    - '.gitignore'
 functions:
   index:
     handler: dist/index.handler
