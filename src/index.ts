@@ -12,11 +12,11 @@ function bootstrapServer(): Promise<Server> {
   const expressApp = express();
   const adapter = new ExpressAdapter(expressApp);
   return NestFactory.create(AppModule, adapter)
-    .then((app) => app.enableCors({ origin: 'http://localhost:3000' }))
+    .then((app) => app.enableCors())
     .then(() => serverless.createServer(expressApp));
 }
 
-export const handler: Handler = (event: any, context: Context) => {
+export const handler = (event: any, context: Context) => {
   if (!cachedServer) {
     bootstrapServer().then((server) => {
       cachedServer = server;

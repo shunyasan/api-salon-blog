@@ -1,6 +1,6 @@
 {
   "type": "postgres",
-  "host": "localhost",
+  "host": "salon-db-proxy-1.proxy-cnvcptdhv02a.ap-northeast-1.rds.amazonaws.com",
   "port": 5432,
   "username": "postgres",
   "password": "shunya416#",

@@ -26,5 +26,7 @@ import { IdAndNameModule } from './id-and-name/id-and-name.module';
     FeatureModule,
     IdAndNameModule,
   ],
+  providers: [AppService],
+  controllers: [AppController],
 })
 export class AppModule {}
