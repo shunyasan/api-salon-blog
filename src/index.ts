@@ -8,12 +8,13 @@ import * as express from 'express';
 
 let cachedServer: Server;
 
-function bootstrapServer(): Promise<Server> {
+async function bootstrapServer(): Promise<Server> {
   const expressApp = express();
   const adapter = new ExpressAdapter(expressApp);
-  return NestFactory.create(AppModule, adapter)
-    .then((app) => app.enableCors())
-    .then(() => serverless.createServer(expressApp));
+  const app = await NestFactory.create(AppModule, adapter);
+  app.enableCors();
+  await app.init();
+  return serverless.createServer(expressApp);
 }
 
 export const handler = (event: any, context: Context) => {
