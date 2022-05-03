@@ -4,6 +4,7 @@ provider:
   name: aws
   runtime: nodejs14.x
   region: ap-northeast-1
+  role: arn:aws:iam::964249418311:role/salon-blog-dev-ap-northeast-1-lambdaRole
 
 plugins:
   - serverless-layers
@@ -19,6 +20,7 @@ package:
   exclude:
     - '**'
 functions:
+  role: 'arn:aws:iam::964249418311:role/salon-blog-dev-ap-northeast-1-lambdaRole'
   index:
     handler: dist/index.handler
     events:
