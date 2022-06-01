@@ -11,7 +11,7 @@ import { BasePartsRepository } from '../common/repository/basePartsRepository';
 export class OriginCategoryService {
   constructor(
     @InjectRepository(OriginCategoryRepository)
-    private originCategoryRepository: OriginCategoryRepository,
+    private readonly originCategoryRepository: OriginCategoryRepository,
   ) {}
   async getAllOriginCategory(): Promise<OriginCategory[]> {
     return await this.originCategoryRepository.getAllOriginCategory();
@@ -33,6 +33,10 @@ export class OriginCategoryService {
       originCategories,
     );
     return sortedAboutCategory;
+  }
+
+  async getOriginCategoryIdAndName(id: string): Promise<IdAndNameDto> {
+    return this.originCategoryRepository.getIdAndName(id);
   }
 
   sortBySelectData(

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { IdAndNameDto } from '../common/dto/id_and_name.dto';
-import { OrderPlanParameter } from '../common/parameter/order_plan.parameter';
 import { MachineRepository } from '../common/repository/machineRepository';
 
 @Injectable()

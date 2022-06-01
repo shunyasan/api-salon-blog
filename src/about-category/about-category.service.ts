@@ -8,7 +8,7 @@ import { IdAndNameDto } from '../common/dto/id_and_name.dto';
 export class AboutCategoryService {
   constructor(
     @InjectRepository(AboutCategoryRepository)
-    private aboutCategoryRepository: AboutCategoryRepository,
+    private readonly aboutCategoryRepository: AboutCategoryRepository,
   ) {}
   async getAllAboutCategory(): Promise<AboutCategory[]> {
     return await this.aboutCategoryRepository.getAllAboutCategory();
@@ -39,6 +39,10 @@ export class AboutCategoryService {
       aboutCategories,
     );
     return sortedAboutCategory;
+  }
+
+  async getAboutCategoryIdAndName(id: string): Promise<IdAndNameDto> {
+    return this.aboutCategoryRepository.getIdAndName(id);
   }
 
   sortBySelectData(

@@ -9,7 +9,6 @@ export class IdAndNameService {
   ) {}
 
   async getAllOriginCategory(): Promise<IdAndNameDto[]> {
-    const data = await this.originCategoryRepository.getAllIdAndName();
-    return data;
+    return this.originCategoryRepository.getAllIdAndName();
   }
 }

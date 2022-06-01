@@ -28,4 +28,13 @@ export class OriginCategoryRepository extends Repository<OriginCategory> {
     const change = get as IdAndNameDto[];
     return change;
   }
+
+  async getIdAndName(id: string): Promise<IdAndNameDto> {
+    const get = await this.findOne({
+      select: ['id', 'name'],
+      where: { id: id },
+    });
+    const change = get as IdAndNameDto;
+    return change;
+  }
 }

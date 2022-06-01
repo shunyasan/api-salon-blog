@@ -84,4 +84,20 @@ export class AboutCategoryController {
       aboutCategoryId,
     );
   }
+
+  @Get('id-and-name/:id')
+  @ApiOperation({
+    operationId: 'getAboutCategoryIdAndName',
+    summary: 'AboutCategory<IdAndName>を1件取得',
+    description: 'AboutCategory<IdAndName>を1件取得',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: IdAndNameDto,
+  })
+  async getAboutCategoryIdAndName(
+    @Param('id') id: string,
+  ): Promise<IdAndNameDto> {
+    return this.aboutCategoryService.getAboutCategoryIdAndName(id);
+  }
 }

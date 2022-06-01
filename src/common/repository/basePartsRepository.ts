@@ -38,4 +38,13 @@ export class BasePartsRepository extends Repository<BaseParts> {
       where: { aboutCategoryId: id, gender: gender ? Not(genderNum) : 3 },
     });
   }
+
+  async getIdAndName(id: string): Promise<IdAndNameDto> {
+    const get = await this.findOne({
+      select: ['id', 'name'],
+      where: { id: id },
+    });
+    const change = get as IdAndNameDto;
+    return change;
+  }
 }

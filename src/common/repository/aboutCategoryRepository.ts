@@ -43,4 +43,13 @@ export class AboutCategoryRepository extends Repository<AboutCategory> {
   async getAllIdAndNameById(id: string): Promise<IdAndNameDto[]> {
     return await this.find({ select: ['id', 'name'], where: { originId: id } });
   }
+
+  async getIdAndName(id: string): Promise<IdAndNameDto> {
+    const get = await this.findOne({
+      select: ['id', 'name'],
+      where: { id: id },
+    });
+    const change = get as IdAndNameDto;
+    return change;
+  }
 }

@@ -13,6 +13,7 @@ import { PriceDto } from 'src/common/dto/price.dto';
 import { IncludePartsAndCategoryPriceDto } from '../common/dto/include_parts_and_category_price.dto';
 import { PagenationParameter } from '../common/parameter/pagenation.parameter';
 import { PriceService } from './price.service';
+import { PagenationOrderPlanParameter } from '../common/parameter/pagenation_order_plan.parameter';
 
 @UsePipes(new ValidationPipe({ transform: true }))
 @ApiTags('price')
@@ -31,10 +32,9 @@ export class PriceController {
     type: IncludePartsAndCategoryPriceDto,
   })
   async getPriceOrderPlan(
-    @Query() orderPlan: OrderPlanParameter,
-    @Query() pagenation: PagenationParameter,
+    @Query() orderPlan: PagenationOrderPlanParameter,
   ): Promise<IncludePartsAndCategoryPriceDto> {
-    return this.priceService.getPriceOrderPlan(orderPlan, pagenation);
+    return this.priceService.getPriceOrderPlan(orderPlan);
   }
 
   @Get('max-count')

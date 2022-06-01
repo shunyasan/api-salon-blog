@@ -47,6 +47,10 @@ export class BasePartsService {
     return sortedAboutCategory;
   }
 
+  async getBasePartsIdAndName(id: string): Promise<IdAndNameDto> {
+    return this.basePartsRepository.getIdAndName(id);
+  }
+
   sortBySelectData(
     targetString: string,
     datas: IdAndNameDto[],

@@ -94,4 +94,18 @@ export class BasePartsController {
   ): Promise<IdAndNameDto[]> {
     return this.basePartsService.getBySortSelected(aboutCategoryId, partsId);
   }
+
+  @Get('id-and-name/:id')
+  @ApiOperation({
+    operationId: 'getBasePartsIdAndName',
+    summary: 'BaseParts<IdAndName>を1件取得',
+    description: 'BaseParts<IdAndName>を1件取得',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: IdAndNameDto,
+  })
+  async getBasePartsIdAndName(@Param('id') id: string): Promise<IdAndNameDto> {
+    return this.basePartsService.getBasePartsIdAndName(id);
+  }
 }

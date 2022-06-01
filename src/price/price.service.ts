@@ -28,6 +28,7 @@ import { BasePartsRepository } from '../common/repository/basePartsRepository';
 import { OriginCategoryRepository } from '../common/repository/originCategoryRepository';
 import { MachineRepository } from '../common/repository/machineRepository';
 import { MachineService } from '../machine/machine.service';
+import { PagenationOrderPlanParameter } from '../common/parameter/pagenation_order_plan.parameter';
 
 @Injectable()
 export class PriceService {
@@ -68,6 +69,47 @@ export class PriceService {
           x_machine: targetMachine,
         });
     }
+
+    // clinic
+    // clinicOption
+
+    if (orderPlan.roomType) {
+      query.andWhere(`clinic.roomType = :x_roomType `, {
+        x_roomType: orderPlan.roomType,
+      });
+    }
+    if (orderPlan.interior) {
+      query.andWhere(`clinic.interior = :x_interior `, {
+        x_interior: orderPlan.interior,
+      });
+    }
+    if (orderPlan.staff) {
+      query.andWhere(`clinic.staffGender = NOT :x_staff `, {
+        x_staff: orderPlan.staff,
+      });
+    }
+    if (orderPlan.card) {
+      query.andWhere(`clinic.cardPay = :x_cardPay `, {
+        x_cardPay: orderPlan.card,
+      });
+    }
+    if (orderPlan.loan) {
+      query.andWhere(`clinic.medhicalLoan = :x_medhicalLoan `, {
+        x_medhicalLoan: orderPlan.loan,
+      });
+    }
+    if (orderPlan.contract) {
+      query.andWhere(`clinicOption.contractCancellation = :x_contract `, {
+        x_contract: orderPlan.contract,
+      });
+    }
+    // if (orderPlan.option) {
+    //   for (const data of orderPlan.option) {
+    //     query.andWhere(`clinic.${data} = :x_option `, {
+    //       x_option: '無料',
+    //     });
+    //   }
+    // }
     return query;
   }
 
@@ -85,31 +127,34 @@ export class PriceService {
   }
 
   async getPriceOrderPlan(
-    orderPlan: OrderPlanParameter,
-    pagenation: PagenationParameter,
+    pagenationOrderPlan: PagenationOrderPlanParameter,
   ): Promise<IncludePartsAndCategoryPriceDto> {
-    const sortPrice = orderPlan.paySystem === '総額' ? 'price' : 'oncePrice';
-    const query = await this.createQueryByOrderPlan(orderPlan);
+    const sortPrice =
+      pagenationOrderPlan.paySystem === '総額' ? 'price' : 'oncePrice';
+    const query = await this.createQueryByOrderPlan(
+      pagenationOrderPlan as OrderPlanParameter,
+    );
+    const log = query.getSql();
     const byAboutCategoryId = await query
       .orderBy(`priceTable.${sortPrice}`, 'ASC')
-      .take(pagenation.take)
-      .skip(pagenation.skip)
+      .take(pagenationOrderPlan.take)
+      .skip(pagenationOrderPlan.skip)
       .getMany();
 
     const originCategory: IdAndNameDto =
       await this.originCategoryRepository.findOne({
         select: ['id', 'name'],
-        where: { id: orderPlan.originCategoryId },
+        where: { id: pagenationOrderPlan.originCategoryId },
       });
     const aboutCategory: IdAndNameDto =
       await this.aboutCategoryRepository.findOne({
         select: ['id', 'name'],
-        where: { id: orderPlan.aboutCategoryId },
+        where: { id: pagenationOrderPlan.aboutCategoryId },
       });
-    const parts: IdAndNameDto = orderPlan.partsId
+    const parts: IdAndNameDto = pagenationOrderPlan.partsId
       ? await this.basePartsRepository.findOne({
           select: ['id', 'name'],
-          where: { id: orderPlan.partsId },
+          where: { id: pagenationOrderPlan.partsId },
         })
       : null;
 

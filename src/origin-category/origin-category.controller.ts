@@ -80,4 +80,20 @@ export class OriginCategoryController {
   ): Promise<IdAndNameDto[]> {
     return this.originCategoryService.getBySortSelected(originCategoryId);
   }
+
+  @Get('id-and-name/:id')
+  @ApiOperation({
+    operationId: 'getOriginCategoryIdAndName',
+    summary: 'OriginCategory<IdAndName>を1件取得',
+    description: 'OriginCategory<IdAndName>を1件取得',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: IdAndNameDto,
+  })
+  async getOriginCategoryIdAndName(
+    @Param('id') id: string,
+  ): Promise<IdAndNameDto> {
+    return this.originCategoryService.getOriginCategoryIdAndName(id);
+  }
 }

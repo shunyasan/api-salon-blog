@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   IsOptional,
   IsString,
@@ -60,4 +60,56 @@ export class OrderPlanParameter {
     description: '毛の太さ',
   })
   hair?: string;
+
+  @IsOptional()
+  @ApiPropertyOptional({
+    example: '完全個室',
+    description: '施術室のタイプ',
+  })
+  roomType?: string;
+
+  @IsOptional()
+  @ApiPropertyOptional({
+    example: '豪華',
+    description: '内装',
+  })
+  interior?: string;
+
+  // DB 1:女性 2:男性 3:女性男性 省くNo.を入力
+  @IsOptional()
+  @Type(() => Number)
+  @ApiPropertyOptional({
+    example: 2,
+    description: '施術者の除外する性別',
+  })
+  staff?: number;
+
+  @IsOptional()
+  @ApiPropertyOptional({
+    example: 'OK',
+    description: 'カードの利用可否',
+  })
+  card?: string;
+
+  @IsOptional()
+  @ApiPropertyOptional({
+    example: 'OK',
+    description: '医療ローンの可否',
+  })
+  loan?: string;
+
+  @IsOptional()
+  @ApiPropertyOptional({
+    example: 'OK',
+    description: '解約の可否',
+  })
+  contract?: string;
+
+  @IsOptional()
+  @Type(() => Array)
+  @ApiPropertyOptional({
+    example: '',
+    description: '無料オプション',
+  })
+  option?: string[];
 }
