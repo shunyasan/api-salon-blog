@@ -149,7 +149,7 @@ export class ClinicRepository extends Repository<Clinic> {
     const query = this.selectQueryFeature();
     const getData = await query
       .where('clinicOption.student_discount like :x_condition', {
-        x_condition: '%完全個室%',
+        x_condition: '%あり%',
       })
       .getCount();
     return getData;

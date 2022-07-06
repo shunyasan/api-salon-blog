@@ -13,6 +13,10 @@ export class ClinicService {
     private readonly priceService: PriceService,
   ) {}
 
+  async getAllClinics(pagenation?: PagenationParameter): Promise<Clinic[]> {
+    return this.clinicRepository.find();
+  }
+
   async getAllClinicAndLimit(
     pagenation: PagenationParameter,
   ): Promise<ClinicNestPriceDto[]> {

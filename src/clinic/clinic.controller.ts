@@ -22,6 +22,21 @@ import { ClinicService } from './clinic.service';
 export class ClinicController {
   constructor(private readonly clinicService: ClinicService) {}
 
+  @Get('')
+  @ApiOperation({
+    operationId: 'getAllClinics',
+    summary: 'クリニックを全件取得',
+    description: 'クリニックを全件取得',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    isArray: true,
+    type: Clinic,
+  })
+  async getAllClinics(): Promise<Clinic[]> {
+    return this.clinicService.getAllClinics();
+  }
+
   @Get('clinic-nest-price/pagenation')
   @ApiOperation({
     operationId: 'getAllClinicAndLimit',
